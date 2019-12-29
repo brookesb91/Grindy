@@ -1,0 +1,9 @@
+{
+    "Lua.diagnostics.globals": [
+        "CreateFrame",
+        "DEFAULT_CHAT_FRAME",
+        "UnitXP",
+        "UnitXPMax",
+        "ceil"
+    ]
+}
