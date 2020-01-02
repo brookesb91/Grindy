@@ -24,7 +24,7 @@ function Grindy:OnXpGain(...)
   if (gained > 0) then
     local toLevel = ceil((Player.Max - Player.Current) / gained)
     self:AddMessage(
-      ""..self:GetDiffString(gained, Player.Latest).." |C0000FFFF"
+      self:GetDiffString(gained, Player.Latest).." |C0000FFFF"
       ..toLevel.." |C007FBA32more |C00FFFFFF"..enemy.." |C007FBA32to level."
     )
   end
