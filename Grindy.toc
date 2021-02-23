@@ -1,8 +1,15 @@
-## Interface: 11303
+#@retail@
+## Interface: 11305
+#@end-retail@
+#@non-retail@
+## Interface: 80300
+#@end-non-retail@
 ## Title: Grindy
 ## Version: 1.0
 ## Author: Ben Brookes
 ## DefaultState: Enabled
+## X-Curse-Project-ID:
+## X-WoWI-ID:
 
 Grindy.lua
 

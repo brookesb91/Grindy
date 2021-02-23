@@ -6,11 +6,13 @@ Player = { StartTime = GetTime() }
 Info = {}
 Cache = {}
 Rate = { Change = 0, Current = 0 }
+
 Colors = {
   Green = "FF10C15C",
   Red = "FFD05353",
   Blue = "FF227C9D",
-  Yellow = "FFFFCB77"
+  Yellow = "FFFFCB77",
+  White = "FFFFFFFF"
 }
 
 function Cache:Init()
@@ -80,16 +82,16 @@ function Grindy:Handle(...)
     local rate_current_str = format_number(Rate.Current)
     local rate_change_str = format_number(Rate.Change)
     local change_color = Rate.Change == 0 and Colors.Blue or
-      (Rate.Change < 0 and Colors.Red or Colors.Blue)
+      (Rate.Change < 0 and Colors.Red or Colors.Green)
 
     Cache:Add(key, time)
-    self:AddMessage("|C"..Colors.Blue..""..to_level_str.." more "..name.." to level.")
-    self:AddMessage("|C"..Colors.Yellow.."Current Rate: "..rate_current_str.." xp/h |C"..change_color.."("..rate_change_str..")")
+    self:AddMessage("|C"..Colors.Yellow..""..to_level_str.." |C"..Colors.White..""..name.." |C"..Colors.Blue.."to level.")
+    self:AddMessage("Current Rate: |C"..Colors.Yellow..""..rate_current_str.." xp/h |C"..change_color.."("..rate_change_str..")")
   end
 end
 
 function Grindy:AddMessage(message)
-  DEFAULT_CHAT_FRAME:AddMessage("[Grindy] "..message.."")
+  DEFAULT_CHAT_FRAME:AddMessage("|C"..Colors.Blue.."[Grindy] "..message.."")
 end
 
 function Grindy:Init()
