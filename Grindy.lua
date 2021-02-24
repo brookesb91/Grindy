@@ -8,10 +8,10 @@ Cache = {}
 Rate = { Change = 0, Current = 0 }
 
 Colors = {
-  green = "FF10C15C",
-  red = "FFD05353",
-  blue = "FF227C9D",
-  yellow = "FFFFCB77",
+  green = "FF50FA7B",
+  red = "FFFF5555",
+  blue = "FF8BE9FD",
+  yellow = "FFF1FA8C",
   white = "FFFFFFFF"
 }
 
@@ -75,6 +75,8 @@ end
 
 function Player:Init()
   self.StartTime = GetTime()
+  self.Latest = 0
+  self.Total = 0
 end
 
 function Player:Update(amount)
@@ -105,12 +107,20 @@ function Grindy:Handle(...)
     local to_level_str = format_number(to_level)
     local rate_current_str = format_number(Rate.Current)
     local rate_change_str = format_number(Rate.Change)
+    local rate_change_sign = Rate.Change > 0 and "+" or ""
     local change_color = Rate.Change == 0 and Colors.blue or
       (Rate.Change < 0 and Colors.red or Colors.green)
 
     Cache:Add(key, time)
-    self:AddMessage(""..Colors:Yellow(to_level_str).." "..Colors:White(name).." "..Colors:Blue("to level.").."")
-    self:AddMessage("Current Rate: "..Colors:Yellow(rate_current_str).." xp/h ("..Colors:Color(rate_change_str, change_color)..")")
+    self:AddMessage(""
+      ..Colors:Yellow(to_level_str).." "
+      ..Colors:White(name).." "
+      ..Colors:Blue("to level.")..
+    "")
+    self:AddMessage(
+      "Current Rate: "..Colors:Yellow(rate_current_str).." xp/h "
+      ..Colors:Color("("..rate_change_sign..""..rate_change_str..")", change_color)..
+    "")
   end
 end
 
