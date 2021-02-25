@@ -13,7 +13,7 @@ function Grindy:Handle(...)
 
     Rate:Update(rate)
 
-    local time_to_level = ceil(Player.ToLevel / rate)
+    local time_to_level = Player.ToLevel / rate
     local time_to_level_str = Utils:FormatNumber(time_to_level)
     local to_level_str = Utils:FormatNumber(to_level)
     local rate_current_str = Utils:FormatNumber(Rate.Current)
