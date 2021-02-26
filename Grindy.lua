@@ -13,7 +13,7 @@ function Grindy:Handle(...)
 
     Rate:Update(rate)
 
-    local time_to_level = Player.ToLevel / rate
+    local time_to_level = string.format("%.2f", Player.ToLevel / rate)
     local time_to_level_str = Utils:FormatNumber(time_to_level)
     local to_level_str = Utils:FormatNumber(to_level)
     local rate_current_str = Utils:FormatNumber(Rate.Current)
@@ -28,7 +28,7 @@ function Grindy:Handle(...)
       ..Colors:Yellow(to_level_str).." "
       ..Colors:White(name).." "
       ..Colors:Blue("to level").." "
-      ..Colors:Yellow("(~"..time_to_level_str.."hrs)")
+      ..Colors:Yellow("(~"..time_to_level_str.."hrs)")..
     "")
     self:AddMessage(
       "Current Rate: "
