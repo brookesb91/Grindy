@@ -10,6 +10,10 @@
   Classic WoW experience tracker and notifier
 </h2>
 
+### About
+
+Provides information about levelling speed, changes in rate and time to next level.
+
 ### Slash Commands
 
 Reset all session info.
