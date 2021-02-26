@@ -22,6 +22,12 @@ Reset all session info.
 /grindy reset
 ```
 
+List creature counts.
+
+```bash
+/grindy list
+```
+
 ### Screenshots
 
 <img src="Screenshots/1.jpg">

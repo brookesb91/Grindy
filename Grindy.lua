@@ -24,13 +24,13 @@ function Grindy:Handle(...)
 
     Cache:Add(key, time)
 
-    self:AddMessage(""
-      ..Colors:Yellow(to_level_str).." "
+    Logger:Log(""
+      ..Colors:Yellow("~"..to_level_str.."").." "
       ..Colors:White(name).." "
       ..Colors:Blue("to level").." "
       ..Colors:Yellow("(~"..time_to_level_str.."hrs)")..
     "")
-    self:AddMessage(
+    Logger:Log(
       "Current Rate: "
       ..Colors:Yellow(rate_current_str).." xp/h "
       ..Colors:Color("("..rate_change_sign..""..rate_change_str..")", change_color)..
@@ -38,15 +38,11 @@ function Grindy:Handle(...)
   end
 end
 
-function Grindy:AddMessage(message)
-  DEFAULT_CHAT_FRAME:AddMessage(""..Colors:Blue("[Grindy] ")..""..message.."")
-end
-
 function Grindy:Init()
   Cache:Init()
   Player:Init()
   Rate:Init()
-  self:AddMessage("Initialised!")
+  Logger:Log("Initialised!")
 end
 
 Grindy:RegisterEvent("PLAYER_LOGIN")
