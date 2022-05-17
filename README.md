@@ -1,5 +1,5 @@
 <p align ="center">
-  <img align="center" src="Grindy.png" width="128px">
+  <img align="center" src="Icons/icon-150.png">
 </p>
 
 <h1 align="center">
