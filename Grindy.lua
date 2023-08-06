@@ -39,7 +39,7 @@ function Grindy:TrackExperience(thing, amount)
   session.experience.total = session.experience.total + amount
 
   -- Experience earned per second & hour this session.
-  local xp_per_second = ceil(session.experience.total / delta)
+  local xp_per_second = session.experience.total / delta
   local xp_per_hour = ceil(xp_per_second * 3600)
   -- Change in experience rate.
   local rate_change = (xp_per_hour - session.experience.rate)
