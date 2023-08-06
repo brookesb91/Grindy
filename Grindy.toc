@@ -1,24 +1,9 @@
-#@retail@
-## Interface: 11305
-#@end-retail@
-#@non-retail@
-## Interface: 80300
-#@end-non-retail@
+## Interface: 11403
 ## Title: Grindy
 ## Notes: Experience grinding tracker
-## Version: 1.0
+## Version: 1.0.0
 ## Author: Ben Brookes
 ## DefaultState: Enabled
-## X-Curse-Project-ID:
-## X-WoWI-ID:
-
-Core/Cache.lua
-Core/Cmd.lua
-Core/Colors.lua
-Core/Info.lua
-Core/Logger.lua
-Core/Player.lua
-Core/Rate.lua
-Core/Utils.lua
+## X-WoWI-ID: 26311
 
 Grindy.lua
