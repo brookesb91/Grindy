@@ -5,15 +5,18 @@ local session = {
   start = GetTime(),
 }
 
-local logger = {
-  log = function(message)
-    DEFAULT_CHAT_FRAME:AddMessage("|cFF8BE9FD[Grindy]: " .. message .. "|r")
-  end
-}
+--- Log a message to the chat frame.
+--- @param message string The message to log.
+local log = function(message)
+  DEFAULT_CHAT_FRAME:AddMessage("|cFF8BE9FDGrindy: " .. message .. "|r")
+end
 
-local function format_number(value)
+--- Format a number with commas.
+--- @param value string|number The value to format.
+local format_number = function(value)
   return string.gsub(value, "^(-?%d+)(%d%d%d)", '%1,%2')
 end
+
 
 --- Reset the session.
 function Grindy:Reset()
@@ -44,9 +47,9 @@ function Grindy:TrackExperience(thing, amount)
 
   -- Experience earned per second & hour this session.
   local xp_per_second = session.experience.total / delta
-  local xp_per_hour = xp_per_second * 3600
+  local xp_per_hour = ceil(xp_per_second * 3600)
   -- Change in experience rate.
-  local rate_change = (xp_per_hour - session.experience.rate)
+  local rate_change = ceil(xp_per_hour - session.experience.rate)
 
   -- Time to next level.
   local seconds_to_level = ceil(xp_to_level / xp_per_second)
@@ -56,23 +59,23 @@ function Grindy:TrackExperience(thing, amount)
   session.experience.rate = xp_per_hour
 
   local output_time = string.format(
-    "~%d %s to level (~%d mins)",
-    things_to_level,
+    "~%s %s to level (~%s mins)",
+    format_number(things_to_level),
     thing,
-    minutes_to_level
+    format_number(minutes_to_level)
   )
 
   local output_rate = string.format(
-    "~%d xp/hour (%s%d)",
-    xp_per_hour,
+    "~%s xp/hour (%s%s)",
+    format_number(xp_per_hour),
     rate_change > 0 and "+" or "",
-    rate_change
+    format_number(rate_change)
   )
 
   local output_rate_color = rate_change >= 0 and "FF50FA7B" or "FFFF5555"
 
-  logger.log(output_time)
-  logger.log("|C" .. (output_rate_color) .. output_rate .. "|r")
+  log(output_time)
+  log("|c" .. (output_rate_color) .. output_rate .. "|r")
 end
 
 Grindy:RegisterEvent("CHAT_MSG_COMBAT_XP_GAIN")
@@ -99,9 +102,9 @@ function SlashHandler(arg1)
 
   if command:find("reset") then
     Grindy:Reset()
-    logger.log("Session was reset.")
+    log("Session was reset.")
   else
-    logger.log("Command not recognised.")
+    log("Command not recognised.")
   end
 end
 
@@ -109,4 +112,4 @@ SlashCmdList["GrindyCommand"] =
     SlashHandler;
 SLASH_GrindyCommand1 = "/grindy"
 
-logger.log("Ready!")
+log("Ready!")
