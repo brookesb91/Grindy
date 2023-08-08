@@ -11,6 +11,10 @@ local logger = {
   end
 }
 
+local function format_number(value)
+  return string.gsub(value, "^(-?%d+)(%d%d%d)", '%1,%2')
+end
+
 --- Reset the session.
 function Grindy:Reset()
   session.start = GetTime()
@@ -40,7 +44,7 @@ function Grindy:TrackExperience(thing, amount)
 
   -- Experience earned per second & hour this session.
   local xp_per_second = session.experience.total / delta
-  local xp_per_hour = ceil(xp_per_second * 3600)
+  local xp_per_hour = xp_per_second * 3600
   -- Change in experience rate.
   local rate_change = (xp_per_hour - session.experience.rate)
 
