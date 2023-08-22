@@ -1,7 +1,7 @@
 ## Interface: 11403
 ## Title: Grindy
 ## Notes: Experience grinding tracker
-## Version: 1.0.0
+## Version: 1.1.0
 ## Author: Ben Brookes
 ## DefaultState: Enabled
 ## X-WoWI-ID: 26311

@@ -1,7 +1,10 @@
 Grindy = CreateFrame("Frame");
 
 local session = {
-  experience = { total = 0, rate = 0 },
+  experience = {
+    total = 0,
+    rate = 0
+  },
   start = GetTime(),
 }
 
