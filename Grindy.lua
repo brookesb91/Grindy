@@ -113,8 +113,7 @@ function SlashHandler(arg1)
   end
 end
 
-SlashCmdList["GrindyCommand"] =
-    SlashHandler;
+SlashCmdList["GrindyCommand"] = SlashHandler
 SLASH_GrindyCommand1 = "/grindy"
 
 log("Ready!")
