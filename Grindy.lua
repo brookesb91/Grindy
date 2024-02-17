@@ -1,3 +1,4 @@
+---@class Frame
 Grindy = CreateFrame("Frame");
 
 local session = {
@@ -41,7 +42,8 @@ function Grindy:TrackExperience(thing, amount)
   -- Player's maximum experience.
   local xp_max = UnitXPMax("player")
   -- Experience required to level.
-  local xp_to_level = xp_max - xp_current
+  -- Amount has not yet been subtracted so must be done manually.
+  local xp_to_level = (xp_max - xp_current - amount)
   -- Amount of [thing] required to level.
   local things_to_level = ceil(xp_to_level / amount)
 
