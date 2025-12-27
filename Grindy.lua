@@ -7,12 +7,18 @@ local session = {
     rate = 0
   },
   start = GetTime(),
+  things = {}
+}
+
+local patterns = {
+  quest = "You gain (%d+) experience.",
+  kill = "(.+) dies, you gain (%d+) experience."
 }
 
 --- Log a message to the chat frame.
 --- @param message string The message to log.
 local log = function(message)
-  DEFAULT_CHAT_FRAME:AddMessage("|cFF8BE9FDGrindy: " .. message .. "|r")
+  DEFAULT_CHAT_FRAME:AddMessage("|cFF8BE9FD[Grindy] " .. message .. "|r")
 end
 
 --- Format a number with commas.
@@ -64,16 +70,16 @@ function Grindy:TrackExperience(thing, amount)
   session.experience.rate = xp_per_hour
 
   local output_time = string.format(
-    "~%s %s to level (~%s mins)",
+    "≈%s %s to level — ≈%s mins",
     format_number(things_to_level),
     thing,
     format_number(minutes_to_level)
   )
 
   local output_rate = string.format(
-    "~%s xp/hour (%s%s)",
+    "≈%s XP per hour — %s%s",
     format_number(xp_per_hour),
-    rate_change > 0 and "+" or "",
+    rate_change > 0 and "↑" or "↓",
     format_number(rate_change)
   )
 
@@ -81,6 +87,20 @@ function Grindy:TrackExperience(thing, amount)
 
   log(output_time)
   log("|c" .. (output_rate_color) .. output_rate .. "|r")
+
+  if not session.things[thing] then
+    session.things[thing] = {
+      total = {
+        count = 0,
+        experience = 0
+      },
+      average = 0
+    }
+  end
+
+  session.things[thing].total.count = session.things[thing].total.count + 1
+  session.things[thing].total.experience = session.things[thing].total.experience + amount
+  session.things[thing].average = ceil(session.things[thing].total.experience / session.things[thing].total.count)
 end
 
 Grindy:RegisterEvent("CHAT_MSG_COMBAT_XP_GAIN")
@@ -89,16 +109,36 @@ Grindy:SetScript("OnEvent",
   function(self, event, ...)
     if event == "CHAT_MSG_COMBAT_XP_GAIN" then
       local message = ...
-      -- This is not suitable for all languages.
-      -- The thing that rewarded the experience.
-      local thing = string.match(message, "(.+).dies") or "Quest"
-      -- The amount of experience rewarded.
-      local amount = tonumber(string.match(message, "(%d+).experience"))
+      local thing, amount = message:match(patterns.kill)
 
-      self:TrackExperience(thing, amount)
+      if thing and amount then
+        self:TrackExperience(thing, tonumber(amount))
+        return
+      end
+
+      amount = message:lower():match(patterns.quest)
+      if amount then
+        self:TrackExperience("Quest", tonumber(amount))
+        return
+      end
     end
   end
 )
+
+GameTooltip:HookScript("OnTooltipSetUnit", function(self)
+  local name = UnitName("mouseover")
+  if not name then return end
+  if session.things[name] then
+    local average = session.things[name].average
+    local total = session.things[name].total.experience
+    local count = session.things[name].total.count
+
+    self:AddDoubleLine("|cFFFFFFFFAverage XP", format_number(average))
+    self:AddDoubleLine("|cFFFFFFFFSession Total XP", format_number(total))
+    self:AddDoubleLine("|cFFFFFFFFSession Total", format_number(count))
+    self:AddDoubleLine("|cFFFFFFFFTo Next Level", format_number(ceil((UnitXPMax("player") - UnitXP("player")) / average)))
+  end
+end)
 
 --- Handle slash commands.
 --- @param arg1 string
@@ -108,6 +148,15 @@ function SlashHandler(arg1)
   if command:find("reset") then
     Grindy:Reset()
     log("Session was reset.")
+  elseif command:find("status") then
+    local now = GetTime()
+    local delta = now - session.start
+    log(string.format(
+      "Session Time: %s mins, Total XP: %s, XP per hour: ≈%s",
+      format_number(ceil(delta / 60)),
+      format_number(session.experience.total),
+      format_number(session.experience.rate)
+    ))
   else
     log("Command not recognised.")
   end
